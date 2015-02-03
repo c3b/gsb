@@ -15,13 +15,20 @@ switch($action){
 	}
 	case 'validerMajFraisForfait':{
 		$lesFrais = $_REQUEST['lesFrais'];
-		if(lesQteFraisValides($lesFrais)){
-	  	 	$pdo->majFraisForfait($idVisiteur,$mois,$lesFrais);
-		}
-		else{
-			ajouterErreur("Les valeurs des frais doivent être numériques");
-			include("vues/v_erreurs.php");
-		}
+                //suppresion des valeurs vides (ajout seb)
+                $lesFrais = array_filter($lesFrais);
+                var_dump($lesFrais);
+                
+                        
+                
+                    if(lesQteFraisValides($lesFrais)){
+                            $pdo->majFraisForfait($idVisiteur,$mois,$lesFrais);
+                    }
+                    else{
+                            ajouterErreur("Les valeurs des frais doivent être numériques");
+                            include("vues/v_erreurs.php");
+                    }
+                
 	  break;
 	}
 	case 'validerCreationFrais':{
