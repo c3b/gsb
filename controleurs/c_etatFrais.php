@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 if (($_SESSION['poste']) == 'visiteur'){
 include("vues/v_sommaire.php");
 $action = $_REQUEST['action'];
