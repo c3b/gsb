@@ -6,7 +6,9 @@ echo 'VALIDER FRAIS';
 }else{
     echo 'vous n\'êtes pas comptable !!';
 }
-
+include("vues/v_listeVisiteurs.php");
+include("vues/v_listeFraisForfait.php");
+include("vues/v_listeFraisHorsForfait.php");
 
 
 //choisir le visiteur et le mois:
@@ -14,15 +16,10 @@ echo 'VALIDER FRAIS';
 
 
 
-/*switch($action){
-	case 'selectionnerMois':{
-		$lesMois=$pdo->getLesMoisDisponibles($idVisiteur);
-		// Afin de sélectionner par défaut le dernier mois dans la zone de liste
-		// on demande toutes les clés, et on prend la première,
-		// les mois étant triés décroissants
-		$lesCles = array_keys( $lesMois );
-		$moisASelectionner = $lesCles[0];
-		include("vues/v_listeMois.php");
+switch($action){
+	case 'selectionnerVisiteur':{
+		$lesVisiteurs=$pdo->getVisiteur();
+		include("vues/v_listeVisiteurs.php");
 		break;
 	}
 	case 'voirEtatFrais':{
@@ -42,5 +39,5 @@ echo 'VALIDER FRAIS';
 		$dateModif =  dateAnglaisVersFrancais($dateModif);
 		include("vues/v_etatFrais.php");
 	}
-}*/
+}
 ?>
