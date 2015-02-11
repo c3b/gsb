@@ -190,6 +190,17 @@ function ajouterErreur($msg){
 	} 
    $_REQUEST['erreurs'][]=$msg;
 }
+
+
+function ajouterValideOk($msg){
+   if (! isset($_REQUEST['valideOk'])){
+      $_REQUEST['valideOk']=array();
+	} 
+   $_REQUEST['valideOk'][]=$msg;
+}
+
+
+
 /**
  * Retoune le nombre de lignes du tableau des erreurs 
  
