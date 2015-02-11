@@ -17,9 +17,15 @@
 
 class PdoGsb{   		
       	private static $serveur='mysql:host=db553467835.db.1and1.com';
-      	private static $bdd='****';   		
-      	private static $user='****' ;    		
-      	private static $mdp='****' ;	
+      	private static $bdd='dbname=db553467835';   		
+      	private static $user='dbo553467835' ;    		
+      	private static $mdp='AzKq*4316' ;
+        
+        /*private static $serveur='mysql:host=localhost';
+      	private static $bdd='dbname=gsbv2';   		
+      	private static $user='root' ;    		
+      	private static $mdp='' ;*/
+        
 		private static $monPdo;
 		private static $monPdoGsb=null;
 /**
@@ -60,6 +66,34 @@ class PdoGsb{
 		$ligne = $rs->fetch();
 		return $ligne;
 	}
+        
+        
+/**
+* Retourne la liste des visiteurs
+* @return ligne de la bdd des visiteurs
+*/
+	public function getVisiteur(){
+		$req = "select * from visiteur";
+		$rs = PdoGsb::$monPdo->query($req);
+		$ligne = $rs->fetchall();
+                return $ligne; 
+
+	}
+        
+/**
+ * 
+ * @param String $id
+ * @return String nom et prenom
+ */
+        public function getNomPrenomVisiteur($id){
+            $req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur
+                WHERE visiteur.id='$id'";
+            $rs = PdoGsb::$monPdo->query($req);
+            $ligne = $rs->fetch();
+            return $ligne;
+        }
+        
+
 
 /**
  * Retourne les informations d'un comptable
