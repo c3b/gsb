@@ -17,9 +17,9 @@
 
 class PdoGsb{   		
       	private static $serveur='mysql:host=db553467835.db.1and1.com';
-      	private static $bdd='dbname=db553467835';   		
-      	private static $user='dbo553467835' ;    		
-      	private static $mdp='AzKq*4316' ;
+      	private static $bdd='******';   		
+      	private static $user='*****' ;    		
+      	private static $mdp='******' ;
         
         /*private static $serveur='mysql:host=localhost';
       	private static $bdd='dbname=gsbv2';   		
