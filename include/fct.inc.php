@@ -214,4 +214,39 @@ function nbErreurs(){
 	   return count($_REQUEST['erreurs']);
 	}
 }
+
+/**
+ * ajoute 1 mois au champ mois strind de la forme 201502 vers 201503
+ * 
+ * @param tString $mois
+ * 
+ * @return moisNormalString
+ */
+
+function ajouterMois($mois){
+    
+    $moisNormal = substr($mois, 5, 1);
+    $anNormal = substr($mois, 0, 4);
+    $dizaine = substr($mois, 4, 1);
+    if($moisNormal == '2' && $dizaine == '1'){
+        $moisPlusUn = 1;
+        $dizaine = 0;
+        $anNormal = intval($anNormal)+1;
+    }else{
+            $moisPlusUn = intval($moisNormal)+1;
+        }
+    $moisNormalString = strval($anNormal).$dizaine.strval($moisPlusUn);
+    return $moisNormalString;
+}
+
+/**
+ * Prend une chaine de date au format aaaamm et retourne une chaine au format mm/aaaa
+ * @param String $anMois
+ * @return String de date au format mm/aaaa
+ */
+function reverseDate($anMois){
+   $an = substr($anMois, 0 ,4);
+   $mois = substr($anMois, 4 ,2);
+   return $mois. '/' .$an;
+}
 ?>
