@@ -187,17 +187,19 @@ input:hover, textarea:hover, select:hover{
 /*  Le texte des messages d'erreur est de couleur rose sur fond ocre et de 
 taille de caractères légèrement supérieure à la normale */
 .erreur{ 
+    
     background-color:rgb(237,210,229);
     color:rgb(203,28,128);
     font-size:1.1em;
-    width:95%;
+    width:40%;
 }
 
 .valideok{ 
+    
     background-color:rgb(72,178,74);
     color:rgb(255,255,255);
     font-size:1.1em;
-    width:95%;
+    width:40%;
 }
 
 .centre {
