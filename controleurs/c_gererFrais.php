@@ -17,10 +17,7 @@ switch($action){
 		$lesFrais = $_REQUEST['lesFrais'];
                 //suppresion des valeurs vides pour eviter fatal error (ajout seb)
                 $lesFrais = array_filter($lesFrais);
-                var_dump($lesFrais);
-                
-                        
-                
+
                     if(lesQteFraisValides($lesFrais)){
                             $pdo->majFraisForfait($idVisiteur,$mois,$lesFrais);
                             echo '<pre>';
