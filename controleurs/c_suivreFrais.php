@@ -1,10 +1,87 @@
 <?php
 if (($_SESSION['poste']) == 'comptable'){
 include("vues/v_sommaire_comptable.php");
-echo 'SUIVRE FRAIS';
+$action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_ENCODED);
+switch ($action) {
 
-}else{
-    echo 'Vous n\'êtes pas comptable !!';
+    case 'SelectionnerMois': {
+        $fichesDispo = $pdo->getLesFichesDisponiblesSuivi();
+        $lesCles = array_keys( $fichesDispo );
+        $moisASelectionner = $lesCles[0];
+        include ("vues/v_listeFichesDispo.php");
+        
+        break;
+    }
+    
+    case 'suivreFiches': {
+        $mois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_NUMBER_INT);
+        $fichesDispo = $pdo->getLesFichesDisponiblesSuivi();
+        $moisASelectionner = $mois;
+        $listeFiches = $pdo->getLesFichesFraisSuivi($mois);
+
+        include ("vues/v_listeFichesDispo.php");
+        include ("vues/v_suiviFichesFrais.php");
+
+        break;
+    }
+
+    case 'passerEnRembourse': {
+        if(isset($_POST['idVisiteur'])){
+            $idVisiteur = filter_input(INPUT_POST, 'idVisiteur', FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+        if(isset($_POST['moisConcerne'])){
+            $mois = filter_input(INPUT_POST, 'moisConcerne', FILTER_SANITIZE_NUMBER_INT);
+        }
+        $etat = 'RB';
+        $pdo->majEtatFicheFrais($idVisiteur,$mois,$etat);
+        ajouterValideOk("La fiche est passée en remboursée");
+        include("vues/v_valideOk.php");
+
+        $listeFiches = $pdo->getLesFichesFraisSuivi($mois);
+        $fichesDispo = $pdo->getLesFichesDisponiblesSuivi();
+        $moisASelectionner = $mois;
+        include 'vues/v_listeFichesDispo.php';
+        include 'vues/v_suiviFichesfrais.php';
+
+        break;
+    }
+    
+    case 'voirDetail': {
+        if(isset($_POST['moisConcerne'])){
+            $leMois = filter_input(INPUT_POST, 'moisConcerne', FILTER_SANITIZE_NUMBER_INT);
+        }
+        if(isset($_POST['idVisiteur'])){
+            $idVisiteur = filter_input(INPUT_POST, 'idVisiteur', FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+        if(isset($_POST['nomVisiteur'])){
+           $nomVisiteur = filter_input(INPUT_POST, 'nomVisiteur', FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+        if(isset($_POST['prenomVisiteur'])){
+           $prenomVisiteur = filter_input(INPUT_POST, 'prenomVisiteur', FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+
+        $lesMois=$pdo->getLesMoisDisponibles($idVisiteur);
+        $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur,$leMois);
+        $lesFraisForfait= $pdo->getLesFraisForfait($idVisiteur,$leMois);
+        $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idVisiteur,$leMois);
+        $numAnnee =substr( $leMois,0,4);
+        $numMois =substr( $leMois,4,2);
+        $libEtat = $lesInfosFicheFrais['libEtat'];
+        $montantValide = $lesInfosFicheFrais['montantValide'];
+        $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
+        $dateModif =  dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
+        include("vues/v_etatFraisModal.php");
+
+        //$pdo->majEtatFicheFrais($idVisiteur,$mois,$etat);
+        $listeFiches = $pdo->getLesFichesFraisSuivi($leMois); // anciennement $mois
+        $fichesDispo = $pdo->getLesFichesDisponiblesSuivi();
+        $moisASelectionner = $leMois;
+        include 'vues/v_listeFichesDispo.php';
+        include 'vues/v_suiviFichesfrais.php';
+
+        break;
+    } 
+
 }
 
 
@@ -12,42 +89,6 @@ echo 'SUIVRE FRAIS';
 
 
 
-
-
-
-
-
-
-
-
-/*switch($action){
-	case 'selectionnerMois':{
-		$lesMois=$pdo->getLesMoisDisponibles($idVisiteur);
-		// Afin de sélectionner par défaut le dernier mois dans la zone de liste
-		// on demande toutes les clés, et on prend la première,
-		// les mois étant triés décroissants
-		$lesCles = array_keys( $lesMois );
-		$moisASelectionner = $lesCles[0];
-		include("vues/v_listeMois.php");
-		break;
-	}
-	case 'voirEtatFrais':{
-		$leMois = $_REQUEST['lstMois']; 
-		$lesMois=$pdo->getLesMoisDisponibles($idVisiteur);
-		$moisASelectionner = $leMois;
-		include("vues/v_listeMois.php");
-		$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur,$leMois);
-		$lesFraisForfait= $pdo->getLesFraisForfait($idVisiteur,$leMois);
-		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idVisiteur,$leMois);
-		$numAnnee =substr( $leMois,0,4);
-		$numMois =substr( $leMois,4,2);
-		$libEtat = $lesInfosFicheFrais['libEtat'];
-		$montantValide = $lesInfosFicheFrais['montantValide'];
-		$nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
-		$dateModif =  $lesInfosFicheFrais['dateModif'];
-		$dateModif =  dateAnglaisVersFrancais($dateModif);
-		include("vues/v_etatFrais.php");
-	}
-}*/
-
-?>
+}else{
+    echo 'Vous n\'êtes pas comptable !!';
+}
