@@ -4,8 +4,9 @@ require_once("include/fct.inc.php");
 require_once ("include/class.pdogsb.inc.php");
 include("vues/v_entete.php") ; ?>
 <script src ="js/jquery-1.11.2.min.js" type="text/javascript"></script>
-<script src ="js/chainedList.js" type="text/javascript"></script>
-
+<script src="js/bootstrap.js" type="text/javascript"></script>
+<script src="js/jquery.easyui.min.js" type="text/javascript"></script>
+<script src="js/jquery-ui.js" type="text/javascript"></script>
 <?php
 $pdo = PdoGsb::getPdoGsb();
 $estConnecte = estConnecte();
